@@ -11,7 +11,7 @@ By having a local environment you can have fast iteration cycles while you devel
 
 To setup minikube:
 
-    [[https://kubernetes.io/docs/tasks/tools/install-kubectl/][Install kubectl]]
-    [[https://kubernetes.io/docs/tasks/tools/install-minikube/][Install Minikube]]
-    Run minikube start to provision a new minikube instance on your local machine.
-    Verify setup with kubectl: kubectl cluster-info
+  - [[https://kubernetes.io/docs/tasks/tools/install-kubectl/][Install kubectl]]
+  - [[https://kubernetes.io/docs/tasks/tools/install-minikube/][Install Minikube]]
+  - Run minikube start to provision a new minikube instance on your local machine.
+  - Verify setup with kubectl: kubectl cluster-info
