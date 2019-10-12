@@ -4,6 +4,17 @@ Kubernetes Labs for Beginners | Intermediate | Advanced https://github.com/Engin
 
 This is my first step towards organizing ther K8s ecosystem components and try to explain how they are coupled with each other.
 
+* What is Kubernetes?
+
+Kubernetes is an open source container management system for deploying, scaling, and managing containerized applications. Kubernetes is built by Google based on their internal proprietary container management systems (Borg and Omega). Kubernetes provides a cloud agnostic platform to deploy your containerized applications with built in support for common operational tasks such as replication, autoscaling, self-healing, and rolling deployments.
+
+You can learn more about Kubernetes from the official documentation.
+
+* What is Helm?
+
+Helm is a package and module manager for Kubernetes that allows you to define, install, and manage Kubernetes applications as reusable packages called Charts. Helm provides support for official charts in their repository that contains various applications such as Jenkins, MySQL, and Consul to name a few. Gruntwork uses Helm under the hood for the Kubernetes modules in this package.
+
+
 * Setting up your Kubernetes cluster: Minikube
 
 We will use minikube as our Kubernetes cluster. Minikube is an official tool maintained by the Kubernetes community to be able to provision and run Kubernetes locally your machine.
