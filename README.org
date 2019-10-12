@@ -1,0 +1,15 @@
+#+Title: Kubernetes Labs
+
+This is my first step towards organizing ther K8s ecosystem components and try to explain how they are coupled with each other.
+
+* Setting up your Kubernetes cluster: Minikube
+
+We will use minikube as our Kubernetes cluster. Minikube is an official tool maintained by the Kubernetes community to be able to provision and run Kubernetes locally your machine.
+By having a local environment you can have fast iteration cycles while you develop and play with Kubernetes before deploying to production.
+
+To setup minikube:
+
+    [[https://kubernetes.io/docs/tasks/tools/install-kubectl/][Install kubectl]]
+    [[https://kubernetes.io/docs/tasks/tools/install-minikube/][Install Minikube]]
+    Run minikube start to provision a new minikube instance on your local machine.
+    Verify setup with kubectl: kubectl cluster-info
