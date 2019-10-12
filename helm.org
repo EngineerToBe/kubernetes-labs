@@ -1,6 +1,7 @@
 * What is Helm?
 
-Helm is a package and module manager for Kubernetes that allows you to define, install, and manage Kubernetes applications as reusable packages called Charts. Helm provides support for official charts in their repository that contains various applications such as Jenkins, MySQL, and Consul to name a few. Gruntwork uses Helm under the hood for the Kubernetes modules in this package.
+Helm is a package and module manager for Kubernetes that allows you to define, install, and manage Kubernetes applications as reusable packages called Charts. Helm provides support for official charts in their repository that contains various applications such as Jenkins, MySQL, and Consul to name a few.
+
 
 In the current version of Helm, there are two components: the Helm Client, and the Helm Server (Tiller).
 
