@@ -13,3 +13,17 @@ The Helm client is a command line utility that provides a way to interact with T
 ** What is Tiller (the Helm Server)?
 
 Tiller is a component of Helm that runs inside the Kubernetes cluster. Tiller is what provides the functionality to apply the Kubernetes resource descriptions to the Kubernetes cluster. When you install a release, the helm client essentially packages up the values and charts as a release, which is submitted to Tiller. Tiller will then generate Kubernetes YAML files from the packaged release, and then apply the generated Kubernetes YAML file from the charts on the cluster.
+
+** Installing the Helm Client
+
+The Helm client can be installed either from source, or from pre-built binary releases.From the Binary release
+
+Every release of Helm provides binary releases for a variety of OSes. These binary versions can be manually downloaded and installed.
+
+#+BEGIN_SRC
+  Download your desired [[https://github.com/helm/helm/releases][version]]
+  Unpack it (tar -zxvf helm-v2.0.0-linux-amd64.tgz)
+  Find the helm binary in the unpacked directory, and move it to its desired destination (mv linux-amd64/helm /usr/local/bin/helm)
+#+END_SRC
+
+From there, you should be able to run the client: helm help
