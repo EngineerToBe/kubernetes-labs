@@ -18,4 +18,7 @@ To install minikube on Linux
   sudo install minikube /usr/local/bin/
 #+END_SRC
 
-Make sure you do have Hypervisor installed like KVM or VirtualBox
+Note:-
+
+- Make sure you do have Hypervisor installed like KVM or VirtualBox
+- Make sure you do have kubectl installed [[scripts/install_kubectl.sh]]
