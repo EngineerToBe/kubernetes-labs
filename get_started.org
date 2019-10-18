@@ -1,1 +1,44 @@
 #+Title: Get Started with K8s on Minikube
+
+To check if virtualization is supported on Linux, run the following command and verify that the output is non-empty:
+
+#+BEGIN_SRC
+  grep -E --color 'vmx|svm' /proc/cpuinfo
+#+END_SRC
+
+To install minikube on Linux
+
+#+BEGIN_SRC
+  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && chmod +x minikube
+
+  Here’s an easy way to add the Minikube executable to your path:
+
+  sudo mkdir -p /usr/local/bin/
+  sudo install minikube /usr/local/bin/
+#+END_SRC
+
+Note:-
+
+- Make sure you do have Hypervisor installed like KVM or VirtualBox
+- Make sure you do have kubectl installed [[scripts/install_kubectl.sh]]
+
+
+Start Minikube Cluster
+
+#+BEGIN_SRC
+  minikube start -p aa-debian-server --extra-config=apiserver.enable-swagger-ui=true --alsologtostderr
+#+END_SRC
+
+Check status of your minikube cluster
+
+#+BEGIN_SRC
+  kubectl cluster-info
+
+  Output will be like below if everything goes well
+
+  Kubernetes master is running at https://192.168.99.100:8443
+  KubeDNS is running at https://192.168.99.100:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+  To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+#+END_SRC
