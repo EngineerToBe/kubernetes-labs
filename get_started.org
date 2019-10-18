@@ -22,3 +22,23 @@ Note:-
 
 - Make sure you do have Hypervisor installed like KVM or VirtualBox
 - Make sure you do have kubectl installed [[scripts/install_kubectl.sh]]
+
+
+Start Minikube Cluster
+
+#+BEGIN_SRC
+  minikube start -p aa-debian-server --extra-config=apiserver.enable-swagger-ui=true --alsologtostderr
+#+END_SRC
+
+Check status of your minikube cluster
+
+#+BEGIN_SRC
+  kubectl cluster-info
+
+  Output will be like below if everything goes well
+
+  Kubernetes master is running at https://192.168.99.100:8443
+  KubeDNS is running at https://192.168.99.100:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+  To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+#+END_SRC
