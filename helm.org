@@ -27,3 +27,25 @@ Every release of Helm provides binary releases for a variety of OSes. These bina
 #+END_SRC
 
 From there, you should be able to run the client: helm help
+
+** Initialization
+
+After installing helm on your machine, initialize Helm on your Kubernetes cluster:
+
+*** Create a Service Account for the tiller. Check Service Account file in serviceaccount directory
+
+#+BEGIN_SRC
+  kubectl create -f serviceaccount/tiller.yaml
+#+END_SRC
+
+*** Give the ServiceAccount full permissions to manage the cluster.
+
+#+BEGIN_SRC
+  kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+#+END_SRC
+
+*** Initialize helm and tiller.
+
+#+BEGIN_SRC
+  helm init --service-account tiller --wait
+#+END_SRC
