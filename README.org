@@ -16,7 +16,7 @@ Helm is a package and module manager for Kubernetes that allows you to define, i
 
 Follow below link to read more about helm.
 
-[[https://raw.githubusercontent.com/EngineerToBe/kubernetes-labs/master/helm.org][Helm]]
+[[https://github.com/EngineerToBe/kubernetes-labs/blob/master/helm.org][Getting Started with Helm]]
 
 * Setting up your Kubernetes cluster: Rancher
 
