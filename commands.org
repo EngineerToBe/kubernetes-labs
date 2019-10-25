@@ -1,0 +1,7 @@
+#+Title: Frequent command use with K8s
+
+*** Get Cluster info
+
+#+BEGIN_SRC
+  kubectl cluster-info
+#+END_SRC

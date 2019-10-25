@@ -14,15 +14,10 @@ You can learn more about Kubernetes from the official documentation.
 
 Helm is a package and module manager for Kubernetes that allows you to define, install, and manage Kubernetes applications as reusable packages called Charts. Helm provides support for official charts in their repository that contains various applications such as Jenkins, MySQL, and Consul to name a few. Gruntwork uses Helm under the hood for the Kubernetes modules in this package.
 
+Follow below link to read more about helm.
 
-* Setting up your Kubernetes cluster: Minikube
+[[https://raw.githubusercontent.com/EngineerToBe/kubernetes-labs/master/helm.org][Helm]]
 
-We will use minikube as our Kubernetes cluster. Minikube is an official tool maintained by the Kubernetes community to be able to provision and run Kubernetes locally your machine.
-By having a local environment you can have fast iteration cycles while you develop and play with Kubernetes before deploying to production.
+* Setting up your Kubernetes cluster: Rancher
 
-To setup minikube:
-
-  - [[https://kubernetes.io/docs/tasks/tools/install-kubectl/][Install kubectl]]
-  - [[https://kubernetes.io/docs/tasks/tools/install-minikube/][Install Minikube]]
-  - Run minikube start to provision a new minikube instance on your local machine.
-  - Verify setup with kubectl: kubectl cluster-info
+We will use Rancher as our Kubernetes cluster running on bare metal machine.
