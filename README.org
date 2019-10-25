@@ -21,3 +21,7 @@ Follow below link to read more about helm.
 * Setting up your Kubernetes cluster: Rancher
 
 We will use Rancher as our Kubernetes cluster running on bare metal machine.
+
+[[images/image1.png
+
+]]
