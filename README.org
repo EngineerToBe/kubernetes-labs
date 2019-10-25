@@ -22,6 +22,4 @@ Follow below link to read more about helm.
 
 We will use Rancher as our Kubernetes cluster running on bare metal machine.
 
-[[images/image1.png
-
-]]
+[[images/image1.png]]
