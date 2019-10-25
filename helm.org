@@ -47,5 +47,21 @@ After installing helm on your machine, initialize Helm on your Kubernetes cluste
 *** Initialize helm and tiller.
 
 #+BEGIN_SRC
-  helm init --service-account tiller --wait
+  helm init --service-account tiller
+#+END_SRC
+
+*** Test Installation
+
+#+BEGIN_SRC
+  kubectl -n kube-system  rollout status deploy/tiller-deploy
+  Waiting for rollout to finish: 0 of 1 updated replicas are available...
+  deployment "tiller-deploy" successfully rolled out
+#+END_SRC
+
+*** Validate Tiller
+
+#+BEGIN_SRC
+  helm version
+  Client: &version.Version{SemVer:"v2.15.1", GitCommit:"cf1de4f8ba70eded310918a8af3a96bfe8e7683b", GitTreeState:"clean"}
+  Server: &version.Version{SemVer:"v2.15.1", GitCommit:"cf1de4f8ba70eded310918a8af3a96bfe8e7683b", GitTreeState:"clean"}
 #+END_SRC
