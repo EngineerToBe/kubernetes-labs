@@ -2,6 +2,33 @@
 
 *** Get Cluster info
 
-#+BEGIN_SRC
+#+begin_src
   kubectl cluster-info
-#+END_SRC
+#+end_src
+
+*** Get pods
+#+begin_src
+  kubectl get pods -n defaul
+
+ kubectl get pods -n namespacename
+#+end_src
+
+*** Get nodes
+
+#+begin_src
+  kubectl get nodes
+#+end_src
+
+*** Describe pods
+
+#+begin_src
+  kubectl describe pods podname
+#+end_src
+
+*** Create a pod with and wiothout pod yml
+
+#+begin_src
+  kubectl run nginx --image nginx
+
+ kubectl create -f pod.yml
+#+end_src
