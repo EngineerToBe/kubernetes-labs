@@ -32,3 +32,111 @@
 
  kubectl create -f pod.yml
 #+end_src
+
+*** Create a replicaset
+
+#+begin_src
+  kubectl create -f replicaset-definition.yml
+#+end_src
+
+*** Check a replicaset
+
+#+begin_src
+  kubectl get replicaset
+#+end_src
+
+*** Delete a replicaset
+
+#+begin_src
+  kubectl delete replicaset nginx-replicaset
+#+end_src
+
+*** Scale a replicaset
+
+#+begin_src
+  kubectl replace -f replicaset-definition.yml
+  kubectl scale --replicas=6 -f replicaset-definition.yml
+#+end_src
+
+
+*** Create a deployment
+
+#+begin_src
+  kubectl create -f deployment-definition.yml
+#+end_src
+
+*** Check a deployment
+
+#+begin_src
+  kubectl get deployments
+#+end_src
+
+*** Delete a deployment
+
+#+begin_src
+  kubectl delete deployment nginx-deployment
+#+end_src
+
+*** Name Space
+
+#+begin_src
+kubectl create namespace dev
+
+kubectl create -f namespace-definition.yml
+#+end_src
+
+***  Check a namespace
+
+#+begin_src
+kubectl get namespaces
+#+end_src
+
+*** Check pods in all namespace
+
+#+begin_src
+kubectl get pods -all
+#+end_src
+
+*** Check the Service
+
+#+begin_src
+kubectl get services
+#+end_src
+
+*** Create the Service
+
+#+begin_src
+kubectl create -f service-definition.yml
+#+end_src
+
+
+*** Good to know the commands
+#+begin_src
+
+ Create an Nginx Pod
+
+  kubectl run nginx --image=nginx
+
+Generate POD manifest YAML file (-o yaml). DRY run
+
+ kubectl run nginx --image= nginx --dry-run=client -o yaml
+
+Create Deployment
+
+kubectl create deployment --image=nginx nginx
+
+Generate Deployment YAML file. DRY run
+
+kubectl create deployment --image=nginx nginx --dry-run=client -o yaml
+
+Create a Service
+
+kubectl expose pod redis --port=6379 --name=redis --dry-run=client -o yaml
+
+kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml
+
+kubectl expose pod nginx --port=80 --name nginx --type=Nodeport --dry-run=client -o yaml
+
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
+
+#+end_src
