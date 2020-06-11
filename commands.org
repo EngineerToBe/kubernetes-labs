@@ -140,3 +140,25 @@ kubectl expose pod nginx --port=80 --name nginx --type=Nodeport --dry-run=client
 kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
 
 #+end_src
+
+*** Taint a Node
+
+#+begin_src
+kubectl taint nodes node01 spray=mortein:NoSchedule
+#+end_src
+
+*** Untaint a Node
+
+#+begin_src
+kubectl taint nodes master node-role.kubernetes.io/master:NoSchedule-
+#+end_src
+
+
+*** Node Selectors
+
+#+begin_src
+kubectl label node node-name key=value
+#+end_src
+
+
+*** Affinity
