@@ -162,3 +162,9 @@ kubectl label node node-name key=value
 
 
 *** Affinity
+
+*** DaemonSets
+
+#+BEGIN_SRC
+kubectl get daemonsets name
+#+END_SRC

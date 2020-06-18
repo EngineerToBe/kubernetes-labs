@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: DeamonSets
+metadata:
+  name: monitoring-daemon
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-agents
+    template:
+      metadata:
+        labels:
+          app: monitoring-agents
+    spec:
+      contasiners:
+        - name: monitoring-agents
+           image: monitoring-agents
