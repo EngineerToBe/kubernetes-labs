@@ -168,3 +168,40 @@ kubectl label node node-name key=value
 #+BEGIN_SRC
 kubectl get daemonsets name
 #+END_SRC
+
+*** Secrets
+
+#+BEGIN_SRC
+kubectl create secret generic app-secret --from-literal=DB_HOST=mysql --from
+#+END_SRC
+
+#+BEGIN_SRC
+
+echo -n "mysql" | base64
+
+to decode
+
+echo -n "mysql base64 decode"
+#+END_SRC
+
+#+BEGIN_SRC
+kubectl describe secrets
+#+END_SRC
+
+#+BEGIN_SRC
+kubectl get secrets
+#+END_SRC
+
+*** Maintenance
+
+#+BEGIN_SRC
+kubectl drain node-1
+
+# To make node schedulable
+
+kubectl uncordon node-1
+
+# To make mark node unschedulable
+
+kubectl cordon node-1
+#+end_SRC

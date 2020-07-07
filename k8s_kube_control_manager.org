@@ -1,0 +1,20 @@
+#+title: K8s Kube Control Manager
+
+A Controller manager various contollers in K8s. The Controller is a process to monitor the various process in k8s
+amd takes neccesary action to heal the cluster and m
+
+- Node Contoller:
+  This is responsible for monitoring the various nodes in K8s cluster and mmake sure all the nodes are healthy
+  ay any point of time, it do this via Kube API server. It keeps checking the nodes every 5 seconds and if its
+  stop hearbeat from node it marks it as unreachable and its gives 5 mminute to come back if it doesnt then it
+  schedules the pods on that node to healthy host.
+
+- Replication Controller:
+  It is the responsible for moniutoring the replaicaset and make sure that desired replica set available all the time.
+
+
+- Deployment Controller
+- Namespace Controller
+- Persistent Controller
+- Endpoint Controller
+- Stateful sets Controller

@@ -1,0 +1,97 @@
+#+title: K8s Core concepts
+
+This is a very basic overvies of K8s architecture. This is just a 10000 feet overview.
+
+
+The prupose of Kubernetes is  to host the applications in the form of containers in a automated way.
+There are   many  components  involved to make K8s work together.
+
+* Master Nodes
+
+The master nodes are responsible for mmanaging the k8c cluster like storing information about different nodes and pods, scheduling the pods, perform health check etc etc
+The master node perform this with set of components called as Control Plain components.
+
+ - etcd
+ - Scheduler
+ - Kube-API
+ - Contrller Manager
+
+
+
+*** etcd
+
+There are many containers comes up and goes down, the all information regarding this is stored in highly available database knows as ETCD.
+The etcd stores the information in Key:Value pair format.
+
+This is a highly available key-value data store that can be distributed among the nodes in the cluster.
+It is used to store the configuration information which is shared and used by each node in the cluster. This store is only accessible by the API server.
+
+*** Scheduler
+
+The scheduler schedules the pods on the nodes on the basis of the resource requirements.
+
+The Scheduler is a service that is responsible for distributing the workload.
+It accepts the workload, tracking workload utilization in the cluster, and distributes the workload to available resources.
+The scheduler is responsible for workload utilization and allocation of pods to available nodes.
+
+
+
+*** Controller Manager
+This component is responsible for regulating the state of the cluster and performing tasks. You can consider it as a daemon which runs in a non-terminating loop and collects and sends information to the API server.
+The main job of this component is to ensure that the desired state of the cluster is achieved.
+This is done by running different controllers to handle the nodes and endpoints. These controllers include; replication controller, endpoint controller, namespace controller, and service controller.
+There are many controller manager in k8s.
+
+ - Node Controller
+ - Replication Controller
+
+*** KubeAPI Server
+
+This is the brain behind the K8s and all other componenents talks to each other via the Kube-API server. It exposes the Kubbernetes API to be used by
+external identity.
+
+*** Container Run Time
+
+The application in K8s are form of the containers like DNS, Networking and thats need some container run time and the mostly used is Docker Runtime Engine.
+But we can use the other also containerd or rocket.
+
+* Worker Nodes
+
+Worker nodes in K8s are the work horses and runs the application
+
+*** Kubelet
+
+The kubelet is the agent which runs on all the worker nodes and listen the Kube API server for bringing pods up and down.
+Each node has a kubelet. This service is responsible for relaying information to and from the control plane service - Master components.
+It interacts with an etcd store to read configuration details and also write values, this communicates with the master to receive commands and work.
+The kubelet process then assumes the responsibility of maintaining the state of work and the node server. It also manages network rules and port forwarding among many.
+
+*** KubeProxy
+
+Ensure the rules are in place to allow the pods communicate with each other.
+This a proxy service that makes all service in a node accessible to the external host. It forwards requests to the correct containers and can also perform primitive load balancing.
+The proxy service ensures that networking environments are predictable and accessible while maintaining its isolation. It manages pods on a node, volumes, secrets, health checks, etc.
+
+
+
+
+* Terminologies
+
+*** Pods
+
+A pod is the smallest unit in a Kubernetes cluster. A pod may contain one or more containers. Pods can be scheduled (in Kubernetes terminology, scheduling means deploying) to a node.
+When you first learn about pods, you may think of them as containers, yet they aren’t. As a container, a pod is a self-contained logical process, with an isolated environment.
+It has its own IP address, storage, hostname...etc. However, a pod can host more than one container. So, a pod can be thought of as a container of containers.
+
+*** ReplicaSet
+
+By nature Pods are ephemeral which means Pods can kill any time due t many reason like Resources, Some bug in application and when Pods goes down it will cause a downtime for the application
+untill we cannot redeploy the Pods. In such scenarios Replicaset objects comes in a picture where replicaSet manages the required pods at any point of time.
+It creates and maintains a specific number of similar pods (replicas)
+
+*** Deployments
+
+If you are using a ReplicaSet to deploy four pods with NodeJS running and you want to change the NodeJS image to a newer version, you need to delete the ReplicaSet and recreate it.
+Restarting the pods causes downtime till the images are available and the pods are running again.
+
+A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way. Let’s dig deeper into Deployment Controllers and patterns.

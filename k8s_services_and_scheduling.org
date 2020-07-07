@@ -1,0 +1,25 @@
+#+title: Services and Scheduling
+
+Services are objects in K8s. Services enable the communication between various component within and outside the application.
+
+
+It is services enables the communication between the various groups of the pods. Services enables the loose coupling beween the
+microservices.
+
+There are 3 types of Services
+
+ - NodePort
+
+   If we have deployed the application on pod on one of the node and we want to access the application running on that pod from our laptop
+   or from any part of the world. This is where service commes into play one of the use case is to listen on a port and forward the request
+   to a port on the pod this is NodePort service. Service maps the port on the node to port on the pod. Service is like a virtual server in a cluster.
+
+   * Target Port (Port on which application running in a pod)
+   * Port
+   * NodePort (30000, 32767)
+
+ - ClusterIP
+
+   The service creates a virtual IP in a cluster to enable the commmunication between the pods.
+
+ - Load Balancer
