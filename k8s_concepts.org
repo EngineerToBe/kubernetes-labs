@@ -107,7 +107,8 @@ It creates and maintains a specific number of similar pods (replicas)
 If you are using a ReplicaSet to deploy four pods with NodeJS running and you want to change the NodeJS image to a newer version, you need to delete the ReplicaSet and recreate it.
 Restarting the pods causes downtime till the images are available and the pods are running again.
 
-A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way. Let’s dig deeper into Deployment Controllers and patterns.
+A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way. Deployment did is no different than a typical ReplicaSet.
+The real power of a Deployment lies in its ability to update the pod templates without causing application outage
 
 *** Namespaces
 
@@ -124,3 +125,5 @@ As soon as a node is added, to the cluster, DaemonSet spins up the pod in the no
 
 They offer you the ability to dynamically change data for containers at runtime. It’s important to note that ConfigMaps are meant to be used for storing sensitive information.
 If the data you want to pass to your application is sensitive, then it is recommended you use Secrets instead.
+*** Statefulsets
+A Statefulset is a Kubernetes controller that is used to manage and maintain one or more Pods. Deployment is more suited to work with stateless applications.
