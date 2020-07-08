@@ -36,6 +36,31 @@ There are 3 types of Services
 
 * Scheduling
 
+The Kubernetes Scheduler is a core component of Kubernetes: After a user or a controller creates a Pod, the Kubernetes Scheduler, monitoring the Object Store for unassigned Pods, will assign the Pod to a Node.
+Then, the Kubelet, monitoring the Object Store for assigned Pods, will execute the Pod.
+
+
+
+The task of the Kubernetes Scheduler is to choose a placement. A placement is a partial, non-injective assignment of a set of Pods to a set of Nodes.
+
+Scheduling is an optimization problem: First, the Scheduler determines the set of feasible placements, which is the set of placements that meet a set of given constraints.
+Then, the Scheduler determines the set of viable placements, which is the set of feasible placements with the highest score.
+
+
+*** Do You Have What it Takes To Run This Pod (Predicate)?
+
+A node may be overloaded with so many busy pods consuming most of its CPU and memory. So, when the scheduler has a Pod to deploy, it determines whether or not the node has the necessary resources. If a Pod was deployed to a node that does not have enough memory (for example) that the Pod is requesting, the hosted application might behave unexpectedly or even crash.
+
+Sometimes, the user needs to make this decision on behalf of Kubernetes. Let’s say that you’ve recently purchased a couple of machines equipped with SSD disks, and you want to use them explicitly for the MongoDB part of the application. To do this, you select the nodes through the node labels in the pod definition. When a node does not match the provided label, it is not chosen for deploying the Pod.
+
+*** Are You a Better Candidate For Having This Pod (Priorities)?
+
+In addition to true/false decisions a.k.a predicates, the scheduler executes some calculations (or functions) to determine which node is more suited to be hosting the pod in question.
+
+For example, a node where the pod image is already present (like it’s been pulled before in a previous deployment) has a better chance of having the pod scheduled to it because no time will be wasted downloading the image again.
+
+Another example is when the scheduler favors a node that does not include other pods of the same Service. This algorithm helps spread the Service pods on multiple nodes as much as possible so that one node failure does not cause the entire Service to go down. Such a decision-making method is called the spreading function.
+
 Manual Scheduling
 
 When you do dnot want to rely on inbuilt scheduler and wants to schedule pods on your own.
@@ -117,6 +142,126 @@ The official Kubernetes documentation page gives us examples of information we c
     Pointers to logging, monitoring, analytics, or audit repositories.
     Client library or tool information that can be used for debugging purposes
 
+* Liveliness and Readiness Probe
+
+What does it mean to self heal?
+
+When a pod is scheduled to a node, the kubelet on that node runs its containers and keeps them running as long as the pod exists. The kubelet will restart a container if its main process crashes. But if the application inside of the container throws an error which causes it to continuously restart, Kubernetes has the ability to heal it by using the correct diagnostic and then following the pod’s restart policy.
+
+Within containers, the kubelet can react to two kinds of probes:
+
+Liveness and Readiness probes are Kubernetes capabilities that enable teams to make their containerised applications more reliable and robust.
+However, if used inappropriately they can result in none of the intended benefits, and can actually make a microservice based application unstable.
+
+
+    Liveness : Under what circumstances is it appropriate to restart the pod?
+    Readiness : under what circumstances should we take the pod out of the list of service endpoints so that it no longer responds to requests?
+
+    ExecAction - executes a command inside the container.
+    TCPSocketAction - performs a TCP check against the container’s IP address on a specified port.
+    HTTPGetAction - performs an HTTP GET request on the container’s IP.
+
+    A handler can then return the following:
+
+    Success - the diagnostic passed on the container.
+    Fail - the container failed the diagnostic and will restart according to its restart policy.
+    Unknown - the diagnostic failed and no action will be taken.
+
+* K8s QOS
+
+By default, all resources in Kubernetes cluster are created in a default namespace. A pod will run with unbounded CPU and memory requests/limits.
+
+A Kubernetes namespace allows one to partition created resources into a logically named group. Each namespace provides:
+
+    a unique scope for resources to avoid name collisions
+    policies to ensure appropriate authority to trusted users
+    ability to specify constraints for resource consumption
+
+This allows a Kubernetes cluster to share resources by multiple groups and provide different levels of QoS for each group.
+
+Resources created in one namespace are hidden from other namespaces. Multiple namespaces can be created, each potentially with different constraints.
+
+
+Quality of Service (QoS) class is a Kubernetes concept which determines the scheduling and eviction priority of pods.
+QoS class is used by the Kubernetes scheduler to make decisions about scheduling pods onto nodes.
+
+QoS class is assigned to pods by Kubernetes itself. We can control the QoS class assigned to a pod by playing around with resource requests and limits for individual containers inside the pod.
+
+There are three QoS classes in Kubernetes:
+
+- Guaranteed
+
+*** How Can I Assign a QoS class of Guaranteed to a Pod?
+
+For a pod to be placed in the Guaranteed QoS class, every container in the pod must have a CPU and memory limit. Kubernetes will automatically assign CPU and memory request values (that are equal to the CPU and memory limit values) to the containers inside this pod and will assign it the Guaranteed QoS class.
+Pods with explicit and equal values for both CPU requests and limits and memory requests and limits are also placed in the Guaranteed QoS class.
+
+*** How does the Kubernetes Scheduler Handle Guaranteed Pods?
+
+The Kubernetes scheduler assigns Guaranteed pods only to nodes which have enough resources to fulfil their CPU and memory requests. The Scheduler does this by ensuring that the sum of both memory and CPU requests for all containers (running and newly scheduled) is lower than the total capacity of the node.
+
+- Burstable
+
+*** How Can I assign a QoS class of Burstable to a Pod?
+
+A pod is assigned a Burstable QoS class if at least one container in that pod has a memory or CPU request.
+
+*** How does the Kubernetes Scheduler Handle Burstable Pods?
+
+The Kubernetes scheduler will not be able to ensure that Burstable pods are placed onto nodes that have enough resources for them.
+
+- BestEffort
+
+*** How can I Assign a QoS Class of BestEffort to a Pod?
+
+A pod is assigned a BestEffort QoS class if none of it’s containers have CPU or memory requests and limits.
+
+*** How does the Kubernetes Scheduler handle BestEffort pods?
+
+BestEffort pods are not guaranteed to be placed on to pods that have enough resources for them. They are, however, able to use any amount of free CPU and memory resources on the node.
+This can at times lead to resource contention with other pods, where BestEffort pods hog resources and do not leave enough resource headroom for other pods to consume resources within resource limits.
+
+* Static Pods
+
+Static pods are a type of pod that is not observed or managed via kube-apiserver and is directly bound to the Kubelet daemon on the node.
+
+* Assigning Pods to Nodes
+
+Kubernetes scheduler ensures that the right node is selected by checking the node’s capacity for CPU and RAM and comparing it to the Pod’s resource requests. The scheduler makes sure that, for each of these resource types, the sum of all resource requests by the Pods’ containers is less than the capacity of the node. This mechanism ensures that Pods end up on nodes with spare resources.
+
+However, there are some scenarios when you want your Pods to end up on specific nodes. For example:
+
+    You want your Pod(s) to end up on a machine with the SSD attached to it.
+    You want to co-locate Pods on a particular machine(s) from the same availability zone.
+    You want to co-locate a Pod from one Service with a Pod from another service on the same node because these Services strongly depend on each other. For example, you may want to place a web server on the same node as the in-memory cache store like Memcached (see the example below).
+
+These scenarios are addressed by a number of primitives in Kubernetes:
+
+- nodeSelector
+
+This is a simple Pod scheduling feature that allows scheduling a Pod onto a node whose labels match the nodeSelector labels specified by the user. nodeSelector is the early Kubernetes feature designed for manual Pod scheduling. The basic idea behind the nodeSelector is to allow a Pod to be scheduled only on those nodes that have label(s) identical to the label(s) defined in the nodeSelector. The latter are key-value pairs that can be specified inside the PodSpec.
+
+- Node and Pod Affinity and Anti-Affinity
+
+Node Affinity
+
+This is the enhanced version of the nodeSelector introduced in Kubernetes 1.4. It offers a more expressive syntax for fine-grained control of how Pods are scheduled to specific nodes.
+Node affinity allows scheduling Pods to specific nodes. There are a number of use cases for node affinity, including the following:
+Spreading Pods across different availability zones to improve resilience and availability of applications in the cluster (see the image below).
+Allocating nodes for memory-intensive Pods. In this case, you can have a few nodes dedicated to less compute-intensive Pods and one or two nodes with enough CPU and RAM dedicated to memory-intensive Pods.
+
+One of the best features of the current affinity implementation in Kubernetes is the support for “hard” and “soft” node affinity.
+
+With “hard” affinity, users can set a precise rule that should be met in order for a Pod to be scheduled on a node. For example, using “hard” affinity you can tell the scheduler to run the Pod only on the node that has SSD storage attached to it.
+
+As the name suggests, “soft” affinity is less strict. Using “soft” affinity, you can ask the scheduler to try to run the set of Pod in availability zone XYZ, but if it’s impossible, allow some of these Pods to run in the other Availability Zone.
+
+requiredDuringSchedulingIgnoredDuringExecution == hard
+preferredDuringSchedulingIgnoredDuringExecution == soft
+
+Inter-Pod Affinity/Anti-Affinity
+
+This feature addresses the third scenario above. Inter-Pod affinity allows co-location by scheduling Pods onto nodes that already have specific Pods running.
 
 
 * Taints and Toleration
