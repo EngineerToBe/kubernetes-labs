@@ -169,6 +169,23 @@ However, if used inappropriately they can result in none of the intended benefit
 
 * K8s QOS
 
+*** Resources Types
+
+Kubernetes has only two built-in manageable resources: CPU and memory. CPU base units are cores, and memory is specified in bytes.
+These two resources play a critical role in how the scheduler allocate pods to nodes. Memory and CPU can be requested, allocated, and consumed.
+You should always set the right CPU memory values. You will be in control of your cluster and make sure that a misbehaving application does not impact capacity available for other pods in your cluster.
+
+*** Requests & Limits
+
+Kubernetes uses the requests & limits structure to control resources such as CPU and memory.
+
+    Requests are what the container is guaranteed to get. For example, If a container requests a resource, Kubernetes will only schedule it on a node that can give it that resource.
+    Limits, on the other hand, is the resource threshold a container never exceed. The container is only allowed to go up to the limit, and then it is restricted.
+
+CPU is a compressible resource, which means that once your container reaches the limit, it will keep running but the operating system will throttle it and keep de-scheduling from using the CPU. Memory, on the other hand, is none compressible resource. Once your container reaches the memory limit, it will be terminated, aka OOM (Out of Memory) killed. If your container keeps OOM killed, Kubernetes will report that it is in a crash loop.
+
+The limit can never be lower than the request. Kubernetes will throw an error and won’t let you run the container if your limit is higher than the request.
+
 By default, all resources in Kubernetes cluster are created in a default namespace. A pod will run with unbounded CPU and memory requests/limits.
 
 A Kubernetes namespace allows one to partition created resources into a logically named group. Each namespace provides:
