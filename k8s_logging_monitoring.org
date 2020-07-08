@@ -1,0 +1,44 @@
+#+title: Logging and Monitoring
+
+In traditional server environments, application logs are written to a file such as /var/log/app.log.
+These files are then viewed on each individual server or sent to a central repository for analysis and or retention.
+
+This method of log collection is discouraged in Kubernetes due to the simple fact that pods can be numerous and short-lived.
+
+Kubernetes recommends letting the application output logs to the stdout and stderr. Each node has its own Kubelet running which will collect the segmented output logs and augment them into a singular log file.
+
+Automatically the log files for each container will be managed and restricted to 10MB.
+
+Basic topology of how Kubernetes natively handles logs can be seen in below illustration.
+
+
+We can use Kubectl to views the logs for the pods(application)
+
+To access your Pod logs, utilize kubectl log. Utilizing kubectl avoids the need to access individual nodes and provides the ability to view logs for all of your nodes collectively in real time.
+One limitation of kubectl logs is the inability to view multiple pod logs simultaneously.
+
+
+
+Log Centralization
+
+Numerous tools and solutions are available for centrally connecting pod logs. One of the most notable being fluentd.
+Fluentd collects and parses logs from numerous sources, then ships them to one or multiple repositories.
+
+
+
+Monitoring
+
+The following are some of the more popular tools used to monitor Kubernetes clusters that we’ll take a look at:
+
+  - Prometheus
+
+    Prometheus is an open-source event monitoring tool for containers or microservices. Prometheus gathers time-series-based numerical data.
+    Prometheus server works by scraping its data for you. This invokes the metrics endpoint of the various nodes that have been configured to monitor.
+    These metrics collect at regular timestamps and are stored locally. The endpoint that has been used to scrape is exposed in the node.
+
+  - Grafana
+
+    Grafana provides us with a graph, a chart that’s web-connected to the data source. It can query, or visualize your data source, and it doesn’t matter where the data is stored.
+
+
+  - cAdvisor

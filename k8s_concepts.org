@@ -2,7 +2,10 @@
 
 This is a very basic overvies of K8s architecture. This is just a 10000 feet overview.
 
-
+Kubernetes is a container orchestration tool. Orchestration is another word for lifecycle management. A container orchestrator does many tasks, including:
+Kubernetes was originally developed by the software and search giant, Google. It was a branch of their Borg project.
+Since its inception, Kubernetes received a lot of momentum from the open source community.
+It is the main project of the Cloud Native Computing Foundation. Some of the biggest market players are backing it: Google, AWS, Azure, IBM, and Cisco to name a few.
 The prupose of Kubernetes is  to host the applications in the form of containers in a automated way.
 There are   many  components  involved to make K8s work together.
 
@@ -55,6 +58,16 @@ external identity.
 The application in K8s are form of the containers like DNS, Networking and thats need some container run time and the mostly used is Docker Runtime Engine.
 But we can use the other also containerd or rocket.
 
+
+*** Networking
+Kubernetes uses a library called Container Network Interface (CNI) as an interface between the cluster and various network providers. There are a number of network providers that can be used in Kubernetes. This number is constantly changing. To name a few:
+
+    Weave net
+    Contiv
+    Flannel
+    Calico
+
+
 * Worker Nodes
 
 Worker nodes in K8s are the work horses and runs the application
@@ -95,3 +108,19 @@ If you are using a ReplicaSet to deploy four pods with NodeJS running and you wa
 Restarting the pods causes downtime till the images are available and the pods are running again.
 
 A Deployment resource uses a ReplicaSet to manage the pods. However, it handles updating them in a controlled way. Let’s dig deeper into Deployment Controllers and patterns.
+
+*** Namespaces
+
+Namespaces are used to organize objects in a Kubernetes cluster. They enable you to group resources together and perform actions on those resources.
+One of the use cases can be the creation of different environments (staging and development) for your deployed application.
+
+*** Daemonsets
+
+DaemonSets are used when you want to make sure that a particular pod runs on all nodes that belong to a cluster.
+This is helpful in situations where you want to run a monitoring or logging application on the nodes in the cluster.
+As soon as a node is added, to the cluster, DaemonSet spins up the pod in the node and destroys the pod as soon as the node exits.
+
+*** Configmap
+
+They offer you the ability to dynamically change data for containers at runtime. It’s important to note that ConfigMaps are meant to be used for storing sensitive information.
+If the data you want to pass to your application is sensitive, then it is recommended you use Secrets instead.

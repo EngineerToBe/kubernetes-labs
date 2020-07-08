@@ -1,0 +1,37 @@
+#+title: Persistent Volumes
+
+* Volumes
+
+The pods in K8s is ephemeral or transient which means they dont persist data and when pods get killed the data goes away with pods.
+To persist data we can attach the volume to the podssuch that the data processed by pods can store in volumes and even if the pods
+get killed te data persist.
+
+
+Example1:
+
+We can create a volume and volume needs storage
+
+K8s supports
+
+ - NFS
+ - GlusterFS
+ - AWS EBS
+ - Flokcer
+ - Scaleio
+ - Azure Disk
+ - Google Persistent volume
+
+
+* Persistent Volumes:
+
+The problem with Volumes is that we need to configure the volume details in pod definition files, every time changes needs
+to be made needs to be managed on all the pods everytime.
+
+
+Persistent Volumes is the cluster wise pool of storage volumes and users can use that to be use by users using the persistent volume claims.
+
+
+* Persistent volumes Claims
+
+PVC are created by users to claimm the Persistent Volume. Once the PVC created K8s bind the PV to the pods. Every single PVC is bind to single PV.
+which meana that there is 1 to 1 mappping between PVC and PV. If there is no PV available the request will be in pending state.

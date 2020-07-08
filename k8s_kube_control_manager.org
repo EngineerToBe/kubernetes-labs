@@ -3,6 +3,17 @@
 A Controller manager various contollers in K8s. The Controller is a process to monitor the various process in k8s
 amd takes neccesary action to heal the cluster and m
 
+A controller ensures that a specific resource is (and remains) at the desired state dictated by a declared definition.
+If a resource deviates from the desired state, the controller is triggered to do the necessary actions to get the resource state back to where it should be.
+But, how do controllers “know” that a change happened? For example, when you scale up a deployment, you actually send a request to the API server with the new desired configuration.
+The API server in return publishes the change to all its event subscribers (any component that listens for changes in the API server).
+Thus, the Deployment controller creates one or more Pod to conform to the new definition.
+A new Pod creation is, in itself, a new change that the API server also broadcasts to the event listeners.
+So, if there are any actions that should get triggered on new Pod creation, they kick in automatically. Notice that Kubernetes uses the declarative programming methodology, not the imperative one.
+This means that the API server only publishes the new definition.
+
+It does not instruct the controller or any event listener about how they should act. The implementation is left to the controller.
+
 - Node Contoller:
   This is responsible for monitoring the various nodes in K8s cluster and mmake sure all the nodes are healthy
   ay any point of time, it do this via Kube API server. It keeps checking the nodes every 5 seconds and if its

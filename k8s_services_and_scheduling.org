@@ -18,8 +18,137 @@ There are 3 types of Services
    * Port
    * NodePort (30000, 32767)
 
+   Porta are array.
+
+   Labels and selectors to link the service to pods. Service acts as a load balancer to distribute request across the pods.
+
  - ClusterIP
 
-   The service creates a virtual IP in a cluster to enable the commmunication between the pods.
+   The service creates a virtual IP in a cluster to enable the commmunication between the pods. This makes the internal commmmunication makes simpler. It provides the interface.
+   Each service gets the IP and assign a name in the cluster which can be use by other services.
+   The service is only accessible from within the Kubernetes cluster – you can’t make requests to your Pods from outside the cluster!
 
  - Load Balancer
+
+   The service becomes accessible externally through a cloud provider's load balancer functionality. GCP, AWS, Azure, and OpenStack offer this functionality.
+   The cloud provider will create a load balancer, which then automatically routes requests to your Kubernetes Service
+
+
+* Scheduling
+
+Manual Scheduling
+
+When you do dnot want to rely on inbuilt scheduler and wants to schedule pods on your own.
+By default each pods have a field name nodename that by default not set, we dont set this filed k8s adds it automatically.
+Scheduler goes through all the pods which dont have nodename not set those are the candidates for scheduling
+than identify the right nodes for the pods by running the shceduling algorithm.
+
+If there is no  scheduler  pods will always remain in pennding states.
+
+The another way to assign  a node  request we can use binding object.
+
+
+* Labels and Selectors
+
+Labels are key-value pairs which are attached to pods, replication controller and services.
+They are used as identifying attributes for objects such as pods and replication controller.
+They can be added to an object at creation time and can be added or modified at the run time.
+Like all other Kubernetes resources you can create your label using the YAML file or using the kubectl command.
+
+The label specified is found in the metadata section of your YAML file
+
+The YAML file below has a label [environment: production] and a label
+
+* Selectors
+
+Selectors are basically filters to filter the labels.
+
+Labels do not provide uniqueness. In general, we can say many objects can carry the same labels. Labels selector are core grouping primitive in Kubernetes. They are used by the users to select a set of objects.
+
+Kubernetes API currently supports two type of selectors −
+
+- Equality-based selectors
+
+Equality- or inequality-based requirements allow filtering by label keys and values. Matching objects must satisfy all of the specified label constraints, though they may have additional labels as well.
+Three kinds of operators are admitted =,==,!=. The first two represent equality (and are simply synonyms), while the latter represents inequality. For example:
+
+#+BEGIN_SRC
+environment = production
+tier != frontend
+#+END_SRC
+
+
+The former selects all resources with key equal to environment and value equal to production.
+
+The latter selects all resources with key equal to tier and value distinct from frontend, and all resources with no labels with the tier key.
+One could filter for resources in production excluding frontend using the comma operator: environment=production,tier!=frontend
+
+- Set-based selectors
+
+Set-based label requirements allow filtering keys according to a set of values. Three kinds of operators are supported: in,notin and exists (only the key identifier). For example:
+
+#+BEGIN_SRC
+environment in (production, qa)
+tier notin (frontend, backend)
+partition
+!partition
+#+END_SRC
+
+The first example selects all resources with key equal to environment and value equal to production or qa.
+The second example selects all resources with key equal to tier and values other than frontend and backend, and all resources with no labels with the tier key.
+The third example selects all resources including a label with key partition; no values are checked. The fourth example selects all resources without a label with key partition; no values are checked.
+Similarly the comma separator acts as an AND operator. So filtering resources with a partition key (no matter the value) and with environment different than
+qa can be achieved using partition,environment notin (qa).
+The set-based label selector is a general form of equality since environment=production is equivalent to environment in (production); similarly for != and notin.
+
+* Annotations
+
+Annotations are quite similar to labels only that annotations provide a place to store additional metadata for Kubernetes objects with the main purpose of assisting tools and libraries.
+The key for annotations would be something like this
+
+deployment.kubernetes.io/revision or kubernetes.io/change-cause.
+
+If you use git for version control, annotations are like the git commits, where each git commit specifies which changes you made to your code.
+
+The official Kubernetes documentation page gives us examples of information we can keep in our annotations.
+
+    Fields managed by a declarative configuration layer. Attaching these fields as annotations distinguishes them from default values set by clients or servers, and from auto-generated fields and fields set by auto-sizing or auto-scaling systems.
+    Build, release, or image information like timestamps, release IDs, git branch, PR numbers, image hashes, and registry address.
+    Pointers to logging, monitoring, analytics, or audit repositories.
+    Client library or tool information that can be used for debugging purposes
+
+
+
+* Taints and Toleration
+
+Taints and Toleration are to restrict what pods to be schedule on what nodes
+
+The nodes get taints and the pods are tolerate.
+
+When the pods are created k8s scheduler schedule the pods oin any available nodes if it fullfil condition.
+If we want specific type of pods to be schedule on a specific node we need to apply taint to a Node by default pods are intolernt which means once
+we apply taint to a node no pod will be able to schedule on it as it is intolerant of taint.
+
+To enable the certain pods on the taint node we will add the toleration to the pod which we want to schedule.
+
+To apply the taint to a node we can use kubectl command
+
+kubectl taint nodes node-name key=value:taint-effect
+
+There are 3 types of taints
+
+1. Noschedule - No scgeduling
+2. PreferNo schedule - system will try to not schedule but no guarantee
+3. No Excute - no new pod schedule
+
+
+To add toleration to a pos we can add it in definition file just need to add the toleration in spec.
+
+* Node Selector
+
+
+
+
+* Node Affinity
+
+The primary purpose is to ensure the pods are hosted on particular nodes.

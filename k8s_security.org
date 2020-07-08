@@ -1,0 +1,46 @@
+#+title: K8s Security
+
+* The Least-Privileged Approach
+
+you shouldn’t grant a component more privileges than it actually needs.
+For example, an Ingress controller should be granted read access to the services and namespaces but shouldn’t be able to modify them.
+If the controller was compromised, the attacker will have read-only access to other components.
+
+
+* Reducing The Attack Surface
+
+In information security, the attack surface refers to all the possible ways through which an attacker can get into a system. So, which do you think is more vulnerable to burglars: a house with only one door or one with three or four gates?
+
+The more the entrance points to a resource, the more “exposed” it is to attacks.
+
+
+* Securing The API Server
+
+The API server offers a REST interface for Kubernetes controllers (and users) to interact with different cluster components.
+It is the first and the most important core component to consider when securing your cluster.
+
+By default, the API server listens on port 8080 for HTTP requests. If you have this default configuration then all the communication between you and the API server is sent in cleartext.
+Any network sniffing program (for example, Wireshark) can reveal sensitive information about your cluster including application settings (in configMaps), Secrets and so on.
+
+If you are running your cluster as a service from a cloud provider, chances are the API server is already using the secure port 443 over TLS to encrypt communications.
+
+* Securing The Kubelet
+
+The kubelet is an agent that sits at the top of every node in the cluster. It is responsible for receiving and executing commands against the containers running on the nodes.
+To do this, the kubelet has its own API interface through which it receives the instructions through HTTP requests. Securing the kubelet component involves multiple layers of its own:
+
+    Deny anonymous access: we need to ensure that no requests are allowed to the kubelet except authenticated ones. This can be done by setting the --anonymous-auth=false flag when starting the kubelet. However, this may prevent legitimate requests from clients like the API server from getting executed. Hence, you need to also set the --kubelet-client-certificate and kubelet-client-key flags when starting the API server. Those flags ensure that the API uses a certificate to identify itself to the kubelet.
+    Authorize all requests: make sure that all requests to the kubelet are authorized first. This can be done by setting the --authorization flag to one of the supported values and make sure it is NOT set to AlwaysAllow.
+    Limit the kubelet’s access level: this belongs to the least-privileged principle that we discussed earlier. The kubelet component should not be able to control containers and pods on other nodes than its own. Notice that this is done on the API server rather than the kubelet itself. For example, kube-apiserver --enable-admission-plugins=...,NodeRestriction.
+    Disable the read-only port: although this port (10255) is no longer supported in newer versions of Kubernetes, you should always ensure that it is not open (depending on which version of Kubernetes you are running). To do this, you add the --read-only-port=0 to the set of flags used to start the API server.
+
+* Securing The Etcd
+
+The etcd is the distributed database that contains all the information necessary for the cluster to function correctly.
+If an attacker could gain write access to this database, they are effectively controlling the cluster.
+The following startup flags will help mitigate several risks related to running etcd:
+
+    HTTPS connection must be enabled by setting the --cert-file and --key-file.
+    Access to etcd must be limited to authorized requests only. This can be done by setting the --client-cert-auth=true. Now any client must provide a valid certificate for connecting to etcd. Additionally, you must instruct etcd on how to verify the certificates that the clients present upon attempting to initiate a connection. This can be done by setting the --trusted-ca-file to specify the certificate authority that was used to sign the certificates.
+    Deny accepting any self-signed certificates by setting the --auto-tls=false.
+    Configure the nodes running etcd to also use HTTPS in their intercommunication. This can be done by setting the following flags:
